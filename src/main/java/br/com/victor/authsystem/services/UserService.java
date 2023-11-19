@@ -20,9 +20,70 @@ public class UserService {
         return users;
     }
 
-    public User findById(Long id) {
+    public User findById(Long id) throws Exception {
         User user = userRepository.findById(id).get();
 
+        if (user != null) {
+            return user;
+        }
+        else {
+            throw new Exception("User does not exist!");
+        }
+        
+    }
+
+    public User createUser(User user) throws Exception {
+        User userExists = userRepository.findByEmail(user.getEmail());
+
+        if (userExists != null) {
+            throw new Exception("This user already exists!");
+        }
+
+        User userCreated = userRepository.save(user);
+
+        return userCreated;
+    }
+
+    public User updateUser(Long id, User user) throws Exception {
+        User userExists = userRepository.findById(id).get();
+
+        if (userExists == null) {
+            throw new Exception("User does not exist!");
+        }
+
+        setAtributesUserUpdate(userExists, user);
+
+        user = userRepository.save(userExists);
+
         return user;
+        
+    }
+
+    public void deleteUser(Long id) throws Exception {
+        User userExists = userRepository.findById(id).get();
+
+        if (userExists == null) {
+            throw new Exception("User does not exist!");
+        }
+
+        userRepository.delete(userExists);
+    }
+
+    private void setAtributesUserUpdate(User source, User target) {
+        if (target.getName() != null) {
+            source.setName(target.getName());
+        }
+
+        if (target.getEmail() != null) {
+            source.setEmail(target.getEmail());
+        }
+
+        if (target.getPhone() != null) {
+            source.setPhone(target.getPhone());
+        }
+
+        if (target.getPassword() != null) {
+            source.setPassword(target.getPassword());
+        }
     }
 }
