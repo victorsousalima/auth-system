@@ -1,6 +1,8 @@
 package br.com.victor.authsystem.services;
 
 import br.com.victor.authsystem.entities.User;
+import br.com.victor.authsystem.exceptions.UserExistingException;
+import br.com.victor.authsystem.exceptions.UserNotFoundException;
 import br.com.victor.authsystem.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,7 +29,7 @@ public class UserService {
             return user;
         }
         else {
-            throw new Exception("User does not exist!");
+            throw new UserNotFoundException("User does not exist!");
         }
         
     }
@@ -36,7 +38,7 @@ public class UserService {
         User userExists = userRepository.findByEmail(user.getEmail());
 
         if (userExists != null) {
-            throw new Exception("This user already exists!");
+            throw new UserExistingException("This user already exists!");
         }
 
         User userCreated = userRepository.save(user);
@@ -48,7 +50,7 @@ public class UserService {
         User userExists = userRepository.findById(id).get();
 
         if (userExists == null) {
-            throw new Exception("User does not exist!");
+            throw new UserNotFoundException("User does not exist!");
         }
 
         setAtributesUserUpdate(userExists, user);
@@ -63,7 +65,7 @@ public class UserService {
         User userExists = userRepository.findById(id).get();
 
         if (userExists == null) {
-            throw new Exception("User does not exist!");
+            throw new UserNotFoundException("User does not exist!");
         }
 
         userRepository.delete(userExists);
