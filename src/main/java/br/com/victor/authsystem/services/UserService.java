@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -19,22 +20,20 @@ public class UserService {
     public List<User> findAll() {
         List<User> users = userRepository.findAll();
 
+        if (users.isEmpty()) {
+            throw new UserNotFoundException("No registered users!");
+        }
+
         return users;
     }
 
-    public User findById(Long id) throws Exception {
-        User user = userRepository.findById(id).get();
+    public User findById(Long id) {
+        Optional<User> user = userRepository.findById(id);
 
-        if (user != null) {
-            return user;
-        }
-        else {
-            throw new UserNotFoundException("User does not exist!");
-        }
-        
+        return user.orElseThrow(() -> new UserNotFoundException("User does not exist!"));
     }
 
-    public User createUser(User user) throws Exception {
+    public User createUser(User user) {
         User userExists = userRepository.findByEmail(user.getEmail());
 
         if (userExists != null) {
@@ -46,12 +45,8 @@ public class UserService {
         return userCreated;
     }
 
-    public User updateUser(Long id, User user) throws Exception {
-        User userExists = userRepository.findById(id).get();
-
-        if (userExists == null) {
-            throw new UserNotFoundException("User does not exist!");
-        }
+    public User updateUser(User user) {
+        User userExists = findById(user.getId());
 
         setAtributesUserUpdate(userExists, user);
 
@@ -61,12 +56,8 @@ public class UserService {
         
     }
 
-    public void deleteUser(Long id) throws Exception {
-        User userExists = userRepository.findById(id).get();
-
-        if (userExists == null) {
-            throw new UserNotFoundException("User does not exist!");
-        }
+    public void deleteUser(Long id) {
+        User userExists = findById(id);
 
         userRepository.delete(userExists);
     }
