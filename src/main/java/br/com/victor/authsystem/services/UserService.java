@@ -1,6 +1,5 @@
 package br.com.victor.authsystem.services;
 
-import br.com.victor.authsystem.dto.UserRequest;
 import br.com.victor.authsystem.entities.User;
 import br.com.victor.authsystem.exceptions.UserExistingException;
 import br.com.victor.authsystem.exceptions.UserNotFoundException;
