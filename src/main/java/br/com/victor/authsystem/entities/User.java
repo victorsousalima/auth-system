@@ -32,6 +32,14 @@ public class User implements Serializable {
 
     public User() {}
 
+    public User(Long id, String name, String email, String phone, String password) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.phone = phone;
+        this.password = password;
+    }
+
     public User(Long id, String name, String email, String phone, TypeUser typeUser, String password) {
         this.id = id;
         this.name = name;
@@ -67,6 +75,14 @@ public class User implements Serializable {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public TypeUser getTypeUser() {
+        return typeUser;
+    }
+
+    public void setTypeUser(TypeUser typeUser) {
+        this.typeUser = typeUser;
     }
 
     public String getPassword() {
