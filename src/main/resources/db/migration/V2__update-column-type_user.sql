@@ -1,0 +1,2 @@
+ALTER TABLE users
+ALTER COLUMN type_user TYPE VARCHAR(5);

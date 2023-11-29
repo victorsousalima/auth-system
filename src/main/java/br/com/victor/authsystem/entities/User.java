@@ -11,7 +11,7 @@ import lombok.Setter;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "tb_user")
+@Table(name = "users")
 @Getter
 @Setter
 @NoArgsConstructor
