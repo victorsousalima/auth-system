@@ -46,4 +46,18 @@ public class User implements Serializable {
         this.phone = phone;
         this.password = password;
     }
+
+    public void updatedAtributes(User newUser) {
+        if (newUser.getName() != null && !(newUser.getName().isBlank())) {
+            this.setName(newUser.getName());
+        }
+
+        if (newUser.getEmail() != null && !(newUser.getEmail().isBlank())) {
+            this.setEmail(newUser.getEmail());
+        }
+
+        if (newUser.getPhone() != null && !(newUser.getPhone().isBlank())) {
+            this.setPhone(newUser.getPhone());
+        }
+    }
 }

@@ -6,6 +6,7 @@ import br.com.victor.authsystem.exceptions.UserNotFoundException;
 import br.com.victor.authsystem.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -33,6 +34,7 @@ public class UserService {
         return user.orElseThrow(() -> new UserNotFoundException("User does not exist!"));
     }
 
+    @Transactional
     public User createUser(User user) {
         User userExists = userRepository.findByEmail(user.getEmail());
 
@@ -45,15 +47,13 @@ public class UserService {
         return userCreated;
     }
 
+    @Transactional
     public User updateCredentialsUser(User user) {
         User userExists = findById(user.getId());
 
-        setAtributesUserUpdate(userExists, user);
+        userExists.updatedAtributes(user);
 
-        user = userRepository.save(userExists);
-
-        return user;
-        
+        return userExists;
     }
 
     // public User updatePasswordUser(Long id, )
@@ -64,17 +64,4 @@ public class UserService {
         userRepository.delete(userExists);
     }
 
-    private void setAtributesUserUpdate(User source, User target) {
-        if (target.getName() != null) {
-            source.setName(target.getName());
-        }
-
-        if (target.getEmail() != null) {
-            source.setEmail(target.getEmail());
-        }
-
-        if (target.getPhone() != null) {
-            source.setPhone(target.getPhone());
-        }
-    }
 }
