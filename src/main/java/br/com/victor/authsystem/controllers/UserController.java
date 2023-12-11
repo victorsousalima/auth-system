@@ -6,6 +6,7 @@ import br.com.victor.authsystem.dto.UserResponse;
 import br.com.victor.authsystem.dto.UserUpdateCredentialsRequest;
 import br.com.victor.authsystem.entities.User;
 import br.com.victor.authsystem.services.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -38,7 +39,7 @@ public class UserController {
     }
 
     @PostMapping()
-    public ResponseEntity<Void> create(@RequestBody UserCreateRequest userCreateRequest) {
+    public ResponseEntity<Void> create(@RequestBody @Valid UserCreateRequest userCreateRequest) {
         User user = service.createUser(userCreateRequest.convertToUser());
 
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(user.getId()).toUri();
@@ -47,7 +48,7 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UserResponse> update(@PathVariable Long id, @RequestBody UserUpdateCredentialsRequest userUpdateCredentials) {
+    public ResponseEntity<UserResponse> update(@PathVariable Long id, @RequestBody @Valid UserUpdateCredentialsRequest userUpdateCredentials) {
         User userUpdated = service.updateCredentialsUser(userUpdateCredentials.convertToUser(id));
 
         return ResponseEntity.ok().body(new UserResponse(userUpdated));
