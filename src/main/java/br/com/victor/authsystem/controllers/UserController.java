@@ -9,6 +9,7 @@ import br.com.victor.authsystem.services.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -23,6 +24,7 @@ public class UserController {
     private UserService service;
 
     @GetMapping()
+    @Secured("ROLE_ADMIN")
     public ResponseEntity<List<UserResponse>> findAll() {
         List<User> users = service.findAll();
 
@@ -32,6 +34,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
+    @Secured("ROLE_ADMIN")
     public ResponseEntity<UserResponse> findById(@PathVariable Long id) {
         User user = service.findById(id);
 

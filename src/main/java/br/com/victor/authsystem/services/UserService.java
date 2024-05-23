@@ -5,6 +5,7 @@ import br.com.victor.authsystem.exceptions.UserExistingException;
 import br.com.victor.authsystem.exceptions.UserNotFoundException;
 import br.com.victor.authsystem.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,11 +37,13 @@ public class UserService {
 
     @Transactional
     public User createUser(User user) {
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        String encodedPassword = encoder.encode(user.getPassword());
+        user.setPassword(encodedPassword);
         User userExists = userRepository.findByEmail(user.getEmail());
 
-        if (userExists != null) {
+        if (userExists != null)
             throw new UserExistingException("This user already exists!");
-        }
 
         User userCreated = userRepository.save(user);
 
