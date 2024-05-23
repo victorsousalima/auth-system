@@ -62,5 +62,4 @@ public class CustomizedResponseEntityExceptionHandler {
 
          return new ResponseEntity<>(exceptionResponse, HttpStatus.FORBIDDEN);
     }
-    
 }
