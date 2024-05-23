@@ -1,0 +1,4 @@
+if (typeUser == ADMIN)
+	return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"));
+else 
+	return List.of(new SimpleGrantedAuthority("ROLE_USER"));

@@ -6,7 +6,7 @@ import jakarta.validation.constraints.Pattern;
 public record UserUpdateCredentialsRequest(
         String name,
         String email,
-        @Pattern(regexp = "\\d{14}")
+        @Pattern(regexp = "\\d{12}")
         String phone
 ) {
 

@@ -7,7 +7,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 
-public record UserCreateRequest(
+public record UserRequest(
     @NotBlank
     String name,
 
@@ -16,7 +16,7 @@ public record UserCreateRequest(
     String email,
 
     @NotBlank
-    @Pattern(regexp = "\\d{12}")
+    @Pattern(regexp = "\\d{14}")
     String phone,
 
     @NotNull
