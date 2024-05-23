@@ -4,4 +4,7 @@ spring:
     url: jdbc:postgresql://localhost:5432/auth_system
     username: postgres
     password: admin123
- 
+  main:
+    allow-circular-references: true
+api:
+  secret-key: ${SECRET_KEY:QZ7KuA880zxAULmkNzO6drU2TvPmCC0yVdZ5b8n6Bcw=}
