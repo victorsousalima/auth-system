@@ -62,4 +62,11 @@ public class CustomizedResponseEntityExceptionHandler {
 
          return new ResponseEntity<>(exceptionResponse, HttpStatus.FORBIDDEN);
     }
+
+    @ExceptionHandler(PasswordUpdateConfirmationException.class)
+    public final ResponseEntity<ExceptionResponse> handlePasswordUpdateConfirmationExceptions(Exception ex, WebRequest request) {
+         ExceptionResponse exceptionResponse = new ExceptionResponse(Instant.now(), ex.getMessage(), request.getDescription(false));
+
+         return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
+    }
 }

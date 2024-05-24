@@ -4,6 +4,7 @@ package br.com.victor.authsystem.controllers;
 import br.com.victor.authsystem.dto.UserCreateRequest;
 import br.com.victor.authsystem.dto.UserResponse;
 import br.com.victor.authsystem.dto.UserUpdateCredentialsRequest;
+import br.com.victor.authsystem.dto.UserUpdatePasswordRequest;
 import br.com.victor.authsystem.entities.User;
 import br.com.victor.authsystem.services.UserService;
 import jakarta.validation.Valid;
@@ -42,15 +43,15 @@ public class UserController {
     }
 
     @PostMapping()
-    public ResponseEntity<Void> create(@RequestBody @Valid UserCreateRequest userCreateRequest) {
+    public ResponseEntity<UserResponse> create(@RequestBody @Valid UserCreateRequest userCreateRequest) {
         User user = service.createUser(userCreateRequest.convertToUser());
 
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(user.getId()).toUri();
 
-        return ResponseEntity.created(uri).build();
+        return ResponseEntity.created(uri).body(new UserResponse(user));
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/updateCredentials/{id}")
     public ResponseEntity<UserResponse> update(@PathVariable Long id, @RequestBody @Valid UserUpdateCredentialsRequest userUpdateCredentials) {
         User userUpdated = service.updateCredentialsUser(userUpdateCredentials.convertToUser(id));
 
@@ -60,6 +61,13 @@ public class UserController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         service.deleteUser(id);
+
+        return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/updatePassword/{id}")
+    public ResponseEntity<Void> updatePassword(@PathVariable Long id, @RequestBody @Valid UserUpdatePasswordRequest userUpdatePasswordRequest) {
+        service.updatePasswordUser(id, userUpdatePasswordRequest);
 
         return ResponseEntity.noContent().build();
     }

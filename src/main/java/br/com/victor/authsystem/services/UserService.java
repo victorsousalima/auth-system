@@ -1,10 +1,13 @@
 package br.com.victor.authsystem.services;
 
+import br.com.victor.authsystem.dto.UserUpdatePasswordRequest;
 import br.com.victor.authsystem.entities.User;
+import br.com.victor.authsystem.exceptions.PasswordUpdateConfirmationException;
 import br.com.victor.authsystem.exceptions.UserExistingException;
 import br.com.victor.authsystem.exceptions.UserNotFoundException;
 import br.com.victor.authsystem.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -59,7 +62,21 @@ public class UserService {
         return userExists;
     }
 
-    // public User updatePasswordUser(Long id, )
+    @Transactional
+    public void updatePasswordUser(Long id, UserUpdatePasswordRequest requestData) {
+        User user = userRepository.getReferenceById(id);
+
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        if (!encoder.matches(requestData.actualPassword(), user.getPassword()))
+            throw new BadCredentialsException("Invalid password!");
+
+        if (!requestData.newPassword().equals(requestData.newPasswordConfirmation()))
+            throw new PasswordUpdateConfirmationException("The new password doesn't match your confirmation!");
+
+        String newPasswordEncoded = encoder.encode(requestData.newPassword());
+
+        user.setPassword(newPasswordEncoded);
+    }
 
     public void deleteUser(Long id) {
         User userExists = findById(id);
