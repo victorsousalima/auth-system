@@ -7,6 +7,7 @@ import br.com.victor.authsystem.dto.UserUpdateCredentialsRequest;
 import br.com.victor.authsystem.dto.UserUpdatePasswordRequest;
 import br.com.victor.authsystem.entities.User;
 import br.com.victor.authsystem.services.UserService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +27,7 @@ public class UserController {
 
     @GetMapping()
     @Secured("ROLE_ADMIN")
+    @SecurityRequirement(name = "bearer-key")
     public ResponseEntity<List<UserResponse>> findAll() {
         List<User> users = service.findAll();
 
@@ -36,6 +38,7 @@ public class UserController {
 
     @GetMapping("/{id}")
     @Secured("ROLE_ADMIN")
+    @SecurityRequirement(name = "bearer-key")
     public ResponseEntity<UserResponse> findById(@PathVariable Long id) {
         User user = service.findById(id);
 
@@ -52,6 +55,7 @@ public class UserController {
     }
 
     @PutMapping("/updateCredentials/{id}")
+    @SecurityRequirement(name = "bearer-key")
     public ResponseEntity<UserResponse> update(@PathVariable Long id, @RequestBody @Valid UserUpdateCredentialsRequest userUpdateCredentials) {
         User userUpdated = service.updateCredentialsUser(userUpdateCredentials.convertToUser(id));
 
@@ -59,6 +63,7 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
+    @SecurityRequirement(name = "bearer-key")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         service.deleteUser(id);
 
@@ -66,6 +71,7 @@ public class UserController {
     }
 
     @PutMapping("/updatePassword/{id}")
+    @SecurityRequirement(name = "bearer-key")
     public ResponseEntity<Void> updatePassword(@PathVariable Long id, @RequestBody @Valid UserUpdatePasswordRequest userUpdatePasswordRequest) {
         service.updatePasswordUser(id, userUpdatePasswordRequest);
 

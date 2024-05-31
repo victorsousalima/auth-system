@@ -31,9 +31,6 @@ public class AuthenticationController {
 
         var userAuthenticade = (User) authenticationDefault.getPrincipal();
 
-//        if (!tokenService.validatePassword(loginRequest.password(), userAuthenticade.getPassword()))
-//            return ResponseEntity.status(401).body("Invalid username or password");
-
         var token = tokenService.generateToken(userAuthenticade);
 
         return ResponseEntity.ok(new TokenResponse(token));
